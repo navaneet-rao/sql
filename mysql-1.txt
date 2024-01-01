@@ -1,0 +1,96 @@
+-- create
+CREATE TABLE EMPLOYEE (
+  fname varchar(15) not null,
+  minite char,
+  lname varchar(15) not null,
+  ssn char(9) not null,
+  bdate date,
+  sex char,
+  salary decimal(10,2),
+  primary key(ssn)
+);
+
+-- insert
+INSERT INTO EMPLOYEE VALUES ('navaneet', 'r', 'rao', '1JTCS064', '2003-05-17', 'M', 500000);
+INSERT INTO EMPLOYEE VALUES ('luke', '', 'skywalker', '1JTCS074', '2003-06-13', 'M', 50000);
+INSERT INTO EMPLOYEE VALUES ('nate', 'f', 'hope', '1JTCS864', '2002-04-17', 'M', 686868);
+
+SET foreign_KEY_CHECKS = 0;
+
+alter table EMPLOYEE  add superssn char(9) not null;
+
+alter table EMPLOYEE add constraint foreign key(superssn) references EMPLOYEE(ssn);
+
+update EMPLOYEE set superssn = '1JTCS074' where ssn = '1JTCS864';
+update EMPLOYEE set superssn = '1JTCS864' where ssn = '1JTCS074';
+update EMPLOYEE set superssn = '1JTCS074' where ssn = '1JTCS064';
+
+-- fetch 
+SELECT * FROM EMPLOYEE;
+
+CREATE TABLE DEPARTMENT (
+  dname varchar(15) not null,
+  dnumber int not null,
+  mgr_ssn char(9) not null,
+  mgr_start_date date,
+  primary key(dnumber),
+  foreign key(mgr_ssn) references EMPLOYEE(ssn)
+);
+
+INSERT into DEPARTMENT VALUES ('admin', 1, '1JTCS064', '1998-05-2');
+INSERT into DEPARTMENT VALUES ('sec', 5, '1JTCS074', '1988-05-2');
+INSERT into DEPARTMENT VALUES ('head', 2, '1JTCS864', '1998-05-2');
+
+-- fetch 
+SELECT * FROM DEPARTMENT;
+
+CREATE TABLE PROJECT (
+  pname varchar(15) not null,
+  pnumber int not null,
+  plocation varchar(15),
+    dnum int not null,
+    primary key(pnumber),
+  foreign key(dnum) references DEPARTMENT(dnumber)
+);
+
+INSERT INTO PROJECT VALUES ('project1',5,'ny', 1);
+INSERT INTO PROJECT VALUES ('project2',8,'japan', 2);
+INSERT INTO PROJECT VALUES ('project3',9,'london', 5);
+
+-- fetch 
+SELECT * FROM PROJECT;
+
+-- CREATE TABLE workson (
+--     essn varchar(9) not null,
+--     pno int not null,
+--     hours decimal(3,1) not null,
+--     primary key(essn,pno),
+--     foreign key(essn) references EMPLOYEE(ssn),
+--     foreign key(pno) references PROJECT(pnumber),
+-- );
+
+-- INSERT INTO workson VALUES ('1JTCS064',5,32.5);
+
+-- CREATE TABLE dependant(
+--     essn varchar(9) not null,
+--     dep_name varchar(15) not null,
+--     sex char,
+--     bdate date,
+--     relationship varchar(8),
+--     primary key(essn, dep_name),
+--     foreign key(essn) references employee(ssn)
+-- );
+
+-- -- fetch 
+-- SELECT * FROM works_on;
+
+show tables;
+
+select bdate FROM employee where fname='navaneet' and minite='r' and lname='rao';
+
+select fname,lname FROM employee, DEPARTMENT where mgr_ssn=ssn and dname='admin';
+
+
+
+
+
